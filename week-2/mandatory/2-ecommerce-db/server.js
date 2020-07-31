@@ -134,9 +134,30 @@ app.get("/customer/orders/all", function (req, res) {
 //12. Retrieve the names of all customers who bought a product from a supplier from China.
 app.get("/customer/orders/country/china", function (req, res) {
   pool.query(
-    "SELECT customers.name FROM customers  INNER JOIN orders ON orders.customer_id=customers.id INNER JOIN order_items ON orders.id=order_items.order_id  INNER JOIN products ON products.id=order_items.product_id INNER JOIN suppliers ON suppliers.id=products.supplier_id WHERE suppliers.country='China' ",
+    "SELECT DISTINCT customers.name FROM customers  INNER JOIN orders ON orders.customer_id=customers.id INNER JOIN order_items ON orders.id=order_items.order_id  INNER JOIN products ON products.id=order_items.product_id INNER JOIN suppliers ON suppliers.id=products.supplier_id WHERE suppliers.country='China' ",
     (error, results) => {
       res.json(results.rows);
     }
   );
+});
+
+// Add a new GET endpoint `/customers` to load all the customers from the database
+app.get("/customers", function (req, res) {
+  pool.query("SELECT * FROM customers", (error, results) => {
+    res.json(results.rows);
+  });
+});
+
+// - Add a new GET endpoint `/suppliers` to load all the suppliers from the database
+app.get("/suppliers", function (req, res) {
+  pool.query("SELECT * FROM suppliers", (error, results) => {
+    res.json(results.rows);
+  });
+});
+
+// - (STRETCH GOAL) Add a new GET endpoint `/products` to load all the product names along with their supplier names.
+app.get("/products", function (req, res) {
+  pool.query("SELECT * FROM products", (error, results) => {
+    res.json(results.rows);
+  });
 });
