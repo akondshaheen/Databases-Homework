@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const { Pool } = require("pg");
 
-app.listen(5000, function () {
+app.listen(8000, function () {
   console.log("Server is running on 3000");
 });
 
